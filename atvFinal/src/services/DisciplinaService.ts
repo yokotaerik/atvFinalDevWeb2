@@ -1,6 +1,11 @@
 import { prisma } from "../prisma/prisma";
 
 export class DisciplinaService {
+
+  async listarDisciplinas() {
+    return await prisma.disciplina.findMany();
+  }
+
   async adicionarProfessorNaDisciplina(
     idProfessor: number,
     idDisciplina: number
@@ -18,6 +23,7 @@ export class DisciplinaService {
       },
     });
   }
+
   async editarDisciplina(id: number, cargaHoraria: number, ementa: string) {
     await prisma.disciplina.update({
       where: {
@@ -29,6 +35,7 @@ export class DisciplinaService {
       },
     });
   }
+  
   criarDisciplina = async (
     nome: string,
     cargaHoraria: number,

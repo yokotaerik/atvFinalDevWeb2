@@ -3,8 +3,13 @@ import { prisma } from "../prisma/prisma";
 
 export class AlunoService {
   async todosAlunos() {
-    await prisma.aluno.findMany();
+    return await prisma.aluno.findMany({
+      include: {
+        curso: true,
+      },
+    });
   }
+  
   async matricularAlunoNaDisciplina(idAluno: number, idDisciplina: number) {
     await prisma.aluno.update({
       where: {
