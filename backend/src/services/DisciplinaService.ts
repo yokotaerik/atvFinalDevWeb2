@@ -1,6 +1,29 @@
 import { prisma } from "../prisma/prisma";
 
 export class DisciplinaService {
+  async findById(id: number) {
+    return await prisma.disciplina.findFirst({
+      where:{
+        id
+      },
+      include:{
+        alunos: {
+          where: {
+            status: "Matriculado"
+          },
+          include: {
+            aluno: {
+              include: {
+                curso: true
+              }
+            }
+          },
+        },
+        cursos: true
+      }
+    })
+  }
+
   async listarDisciplinas() {
     return await prisma.disciplina.findMany();
   }

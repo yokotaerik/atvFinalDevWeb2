@@ -15,14 +15,14 @@ routes.post("/api/aluno/matricular/disciplina", alunoController.matricularAlunoN
 routes.post("/api/aluno/matricular/curso", alunoController.matricularAlunoNoCurso)
 routes.get("/api/aluno/todos", alunoController.todosAlunos)
 routes.get("/api/aluno/porId/:id", alunoController.findById)
-
+routes.put("/api/aluno/atualizar/status/disciplina", alunoController.atualizarStatusDisciplina)
 
 routes.get("/api/curso/porId/:id", cursoController.findById)
 routes.get("/api/curso/todos", cursoController.todosCursos)
 routes.post("/api/curso/criar", cursoController.cadastrarCurso)
 routes.post("/api/curso/adicionar_disciplina", cursoController.adicionarDisciplinaAoCurso)
 
-// routes.get("/api/disciplina/porId/:id", disciplinaController.findById)
+routes.get("/api/disciplina/porId/:id", disciplinaController.findById)
 routes.get("/api/disciplina/todos", disciplinaController.todosDisciplinas)
 routes.post("/api/disciplina/criar", disciplinaController.cadastrarDisciplina)
-routes.post("/api/disciplina/editar/:id", disciplinaController.editarDisciplina)
+routes.put("/api/disciplina/editar/:id", disciplinaController.editarDisciplina)

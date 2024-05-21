@@ -15,6 +15,7 @@ export interface DisciplinaDTO {
   nome: string;
   cargaHoraria: number;
   ementa: string;
+  alunos: AlunoDTO[] | null;
 }
 
 const useCurso = () => {

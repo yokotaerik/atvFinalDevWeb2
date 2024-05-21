@@ -2,6 +2,11 @@ import { DisciplinaService } from "../services/DisciplinaService";
 import { Request, Response } from "express";
 const disciplinaService = new DisciplinaService();
 export class DisciplinaController {
+  async findById(req: Request, res: Response) {
+    const id = req.params.id
+    const disciplina = await disciplinaService.findById(Number(id));
+    res.status(200).send(disciplina)
+  }
   async todosDisciplinas(req: Request, res: Response) {
     const disciplinas = await disciplinaService.listarDisciplinas();
     res.status(200).send(disciplinas);

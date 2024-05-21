@@ -12,6 +12,7 @@ const AlunoDetails = () => {
 
   const findAlunoById = async (id: number) => {
     try {
+      if(id === undefined) return;
       const response = await api.get(`/aluno/porId/${id}`);
       setAluno(response.data);
     } catch (error) {
