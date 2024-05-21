@@ -21,7 +21,13 @@ export class DisciplinaController {
   async editarDisciplina(req: Request, res: Response) {
     const { id } = req.params;
     const { cargaHoraria, ementa } = req.body;
-    await disciplinaService.editarDisciplina(Number(id), cargaHoraria, ementa);
-    res.status(200).send("Disciplina editada com sucesso!");
+    try{
+      await disciplinaService.editarDisciplina(Number(id), cargaHoraria, ementa);
+      res.status(200).send("Disciplina editada com sucesso!");
+
+    } catch (error) {
+      res.status(400).send("Erro ao editar disciplina");
+    }
+    
   }
 }

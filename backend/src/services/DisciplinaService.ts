@@ -29,6 +29,7 @@ export class DisciplinaService {
   }
 
   async editarDisciplina(id: number, cargaHoraria: number, ementa: string) {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     await prisma.disciplina.update({
       where: {
         id: id,
