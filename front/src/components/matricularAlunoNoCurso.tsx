@@ -4,9 +4,10 @@ import React, { useState } from "react";
 
 interface MatricularNoCursoProps {
   idAluno: number;
+  onRequest: any;
 }
 
-const MatricularAlunoNoCurso = ({ idAluno }: MatricularNoCursoProps) => {
+const MatricularAlunoNoCurso = ({ idAluno, onRequest }: MatricularNoCursoProps) => {
   const [selectedCurso, setSelectedCurso] = useState<number | null>(null);
   const { cursos } = useCurso();
 
@@ -28,6 +29,7 @@ const MatricularAlunoNoCurso = ({ idAluno }: MatricularNoCursoProps) => {
       });
       if(response.status === 200) {
         alert("Aluno matriculado no curso com sucesso");
+        onRequest();
       }
     } catch (error) {
       alert("Erro ao matricular aluno no curso");

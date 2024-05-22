@@ -1,6 +1,36 @@
 import { prisma } from "../prisma/prisma";
 
 export class AlunoService {
+  async deleteAluno(id: number) {
+    const alunoDeletado = await prisma.aluno.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        curso: true,
+        disciplinas: {},
+      },
+    });
+
+    if(!alunoDeletado) throw new Error("Aluno não encontrado.");
+
+    if (
+      alunoDeletado?.disciplinas.some(async (disciplina) => {
+        disciplina.status = "Matriculado";
+      })
+    ) {
+      throw new Error(
+        "Aluno não pode ser deletado pois está matriculado em uma disciplina."
+      );
+    } else {
+      await prisma.aluno.delete({
+        where: {
+          id,
+        },
+      });
+    }
+  }
+
   async findById(id: number) {
     return await prisma.aluno.findUnique({
       where: {
@@ -110,10 +140,11 @@ export class AlunoService {
       },
     });
   }
-  criarAluno = async (nome: string) => {
+  criarAluno = async (nome: string, cpf: string) => {
     await prisma.aluno.create({
       data: {
         nome,
+        cpf,
       },
     });
   };

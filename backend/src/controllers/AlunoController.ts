@@ -4,6 +4,16 @@ import { Request, Response } from "express";
 const alunoService = new AlunoService();
 
 export class AlunoController {
+  deleteAluno(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      alunoService.deleteAluno(id);
+      res.status(200).send("Aluno deletado com sucesso!");
+    } catch (error: any) {
+      res.status(500).send(error.message);
+    }
+  }
+
   async findById(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
@@ -16,8 +26,8 @@ export class AlunoController {
 
   async cadastrarAluno(req: Request, res: Response) {
     try {
-      const { nome } = req.body;
-      await alunoService.criarAluno(nome);
+      const { nome, cpf } = req.body;
+      await alunoService.criarAluno(nome, cpf);
       res.status(201).send("Aluno cadastrado com sucesso!");
     } catch (error: any) {
       res.status(500).send(error.message);

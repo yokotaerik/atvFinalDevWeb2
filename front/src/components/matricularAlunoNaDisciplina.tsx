@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 
 interface MatricularAlunoNaDisciplinaProps {
     alunoId: number;
+    onRequest: any;
 }
 
-const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = ({ alunoId }) => {
+const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = ({ alunoId , onRequest }) => {
     const [disciplinasSelecionadas, setDisciplinasSelecionadas] = useState<string[]>([]);
     const { disciplinas } = useDisciplina();
 
@@ -33,6 +34,7 @@ const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = 
             });
             if (response.status === 200) {
                 alert('Aluno matriculado na disciplina com sucesso');
+                onRequest();
             }
         } catch (error) {
             alert('Erro ao matricular aluno nas disciplinas');

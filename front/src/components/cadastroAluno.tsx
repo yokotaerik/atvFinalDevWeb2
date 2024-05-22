@@ -2,9 +2,14 @@ import api from "@/api/axios";
 import useAlunos from "@/hooks/useAlunos";
 import React, { useState } from "react";
 
-const CadastrarAlunoForm: React.FC = () => {
+interface CadastrarAlunoFormProps {
+  onRequest: any;
+}
+
+const CadastrarAlunoForm = ({ onRequest }: CadastrarAlunoFormProps) => {
   const { handleAddAluno } = useAlunos();
   const [nome, setNome] = useState("");
+  const [cpf, setCpf] = useState("");
 
   const handleNomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNome(event.target.value);
@@ -12,7 +17,8 @@ const CadastrarAlunoForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleAddAluno(nome);
+    await handleAddAluno(nome, cpf);
+    onRequest();
   };
 
   return (
@@ -24,6 +30,12 @@ const CadastrarAlunoForm: React.FC = () => {
           type="text"
           value={nome}
           onChange={handleNomeChange}
+          className="border border-gray-300 rounded-md p-1"
+        />
+         <input
+          type="text"
+          value={cpf}
+          onChange={(e) => setCpf(e.target.value)}
           className="border border-gray-300 rounded-md p-1"
         />
         <button

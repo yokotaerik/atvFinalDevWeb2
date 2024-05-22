@@ -16,6 +16,7 @@ routes.post("/api/aluno/matricular/curso", alunoController.matricularAlunoNoCurs
 routes.get("/api/aluno/todos", alunoController.todosAlunos)
 routes.get("/api/aluno/porId/:id", alunoController.findById)
 routes.put("/api/aluno/atualizar/status/disciplina", alunoController.atualizarStatusDisciplina)
+routes.delete("/api/aluno/:id", alunoController.deleteAluno)
 
 routes.get("/api/curso/porId/:id", cursoController.findById)
 routes.get("/api/curso/todos", cursoController.todosCursos)

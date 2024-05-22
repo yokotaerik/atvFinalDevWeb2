@@ -55,17 +55,17 @@ const AlunoDetails = () => {
     if (id != undefined) {
       findAlunoById(Number(id));
     }
-  }, [id]);
+  }, []);
 
   if (!aluno) {
     return <div>Carregando ...</div>;
   }
 
   return (
-    <div className="flex gap-4">
-      <div className="w-full">
+    <div className="flex gap-4 ">
+      <div className="w-3/5">
         <h1 className="text-2xl font-bold mb-4">{aluno.nome}</h1>
-        <p className="mb-2">Curso: {aluno.curso?.nome}</p>
+        <p className="mb-2"> {aluno.curso?.nome ? "Curso: " + aluno.curso.nome : "Não está matriculado a nenhum curso"}</p>
         <h2 className="text-lg font-bold mb-2">Disciplinas matriculadas:</h2>
         <ul className="mb-4">
           {aluno.disciplinas
@@ -126,9 +126,9 @@ const AlunoDetails = () => {
             : "Nenhuma disciplina cursada ou matriculada"}
         </ul>
       </div>
-      <div className="w-1/3 flex flex-col gap-5">
-        {!aluno.curso && <MatricularAlunoNoCurso idAluno={aluno.id} />}
-        <MatricularAlunoNaDisciplina alunoId={aluno.id} />
+      <div className="w-2/5 flex flex-col gap-5">
+        {!aluno.curso && <MatricularAlunoNoCurso idAluno={aluno.id} onRequest={() => findAlunoById(aluno.id)} />}
+        <MatricularAlunoNaDisciplina alunoId={aluno.id} onRequest={() => findAlunoById(aluno.id)} />
       </div>
     </div>
   );
