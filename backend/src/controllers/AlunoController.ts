@@ -26,8 +26,8 @@ export class AlunoController {
 
   async cadastrarAluno(req: Request, res: Response) {
     try {
-      const { nome, cpf } = req.body;
-      await alunoService.criarAluno(nome, cpf);
+      const { nome, cpf, email } = req.body;
+      await alunoService.criarAluno(nome, cpf, email);
       res.status(201).send("Aluno cadastrado com sucesso!");
     } catch (error: any) {
       res.status(500).send(error.message);
@@ -72,6 +72,16 @@ export class AlunoController {
       const { id, status } = req.body;
       await alunoService.atualizarStatusDisciplina(id, status);
       res.status(200).send("Status da disciplina atualizado com sucesso!");
+    } catch (error: any) {
+      res.status(500).send(error.message);
+    }
+  }
+
+  async edtairAluno(req: Request, res: Response) {
+    try {
+      const { id, nome, email } = req.body;
+      await alunoService.editarAluno(id, nome, email);
+      res.status(200).send("Aluno editado com sucesso!");
     } catch (error: any) {
       res.status(500).send(error.message);
     }

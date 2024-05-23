@@ -1,5 +1,6 @@
 import api from "@/api/axios";
 import useAlunos from "@/hooks/useAlunos";
+import { execArgv } from "process";
 import React, { useState } from "react";
 
 interface CadastrarAlunoFormProps {
@@ -10,6 +11,7 @@ const CadastrarAlunoForm = ({ onRequest }: CadastrarAlunoFormProps) => {
   const { handleAddAluno } = useAlunos();
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleNomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNome(event.target.value);
@@ -17,7 +19,7 @@ const CadastrarAlunoForm = ({ onRequest }: CadastrarAlunoFormProps) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await handleAddAluno(nome, cpf);
+    await handleAddAluno(nome, cpf, email);
     onRequest();
   };
 
@@ -31,11 +33,22 @@ const CadastrarAlunoForm = ({ onRequest }: CadastrarAlunoFormProps) => {
           value={nome}
           onChange={handleNomeChange}
           className="border border-gray-300 rounded-md p-1"
+          required
         />
-         <input
+        <label className="font-semibold">CPF:</label>
+        <input
           type="text"
           value={cpf}
           onChange={(e) => setCpf(e.target.value)}
+          required
+          className="border border-gray-300 rounded-md p-1"
+        />
+        <label className="font-semibold">E-mail:</label>
+        <input
+          type="text"
+          value={email}
+          required
+          onChange={(e) => setEmail(e.target.value)}
           className="border border-gray-300 rounded-md p-1"
         />
         <button

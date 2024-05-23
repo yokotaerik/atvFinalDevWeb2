@@ -77,6 +77,7 @@ const AlunoDetails = () => {
                     className="mb-2 bg-gray-100 rounded-md p-2 flex justify-between items-center"
                   >
                     {disciplina.disciplina.nome}
+                    Matricualdo em: {new Date(disciplina.data).toLocaleDateString()}
                     <div>
                       <button
                         className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -106,6 +107,8 @@ const AlunoDetails = () => {
                     className="mb-2 bg-gray-100 rounded-md p-2"
                   >
                     {disciplina.disciplina.nome}
+                    Matricualdo em: {new Date(disciplina.data).toLocaleDateString()}
+
                   </li>
                 ))
             : "Nenhuma disciplina cursada ou matriculada"}
@@ -121,6 +124,8 @@ const AlunoDetails = () => {
                     className="mb-2 bg-gray-100 rounded-md p-2"
                   >
                     {disciplina.disciplina.nome}
+                    Matricualdo em: {new Date(disciplina.data).toLocaleDateString()}
+
                   </li>
                 ))
             : "Nenhuma disciplina cursada ou matriculada"}

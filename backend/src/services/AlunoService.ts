@@ -12,7 +12,7 @@ export class AlunoService {
       },
     });
 
-    if(!alunoDeletado) throw new Error("Aluno não encontrado.");
+    if (!alunoDeletado) throw new Error("Aluno não encontrado.");
 
     if (
       alunoDeletado?.disciplinas.some(async (disciplina) => {
@@ -140,11 +140,24 @@ export class AlunoService {
       },
     });
   }
-  criarAluno = async (nome: string, cpf: string) => {
+  criarAluno = async (nome: string, cpf: string, email: string) => {
     await prisma.aluno.create({
       data: {
         nome,
         cpf,
+        email,
+      },
+    });
+  };
+
+  editarAluno = async (id: number, nome: string, email: string) => {
+    await prisma.aluno.update({
+      where: {
+        id,
+      },
+      data: {
+        nome,
+        email,
       },
     });
   };

@@ -12,8 +12,9 @@ export interface AlunoDTO {
 
 export interface DisciplinaAlunoDTO {
   id: number;
-  status: string
+  status: string;
   disciplina: DisciplinaDTO;
+  data: string;
 }
 
 const useAlunos = () => {
@@ -33,10 +34,10 @@ const useAlunos = () => {
     fetchStudents();
   }, []);
 
-  const handleAddAluno = async (nome: string, cpf: string) => {
-    if(!nome || !cpf ) return alert("Preencha todos os campos!");
+  const handleAddAluno = async (nome: string, cpf: string, email: string) => {
+    if (!nome || !cpf) return alert("Preencha todos os campos!");
     try {
-      const response = await api.post("/aluno/cadastrar", { nome, cpf });
+      const response = await api.post("/aluno/cadastrar", { nome, cpf, email });
       if (response.status === 201) {
         alert("Aluno cadastrado com sucesso!");
         await fetchStudents();
@@ -55,13 +56,13 @@ const useAlunos = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao deletar aluno! (Se o aluno estiver com alguma matricula ou disciplina ativa não será possivél deleta-lo)");
+      alert(
+        "Erro ao deletar aluno! (Se o aluno estiver com alguma matricula ou disciplina ativa não será possivél deleta-lo)"
+      );
     }
-  }
+  };
 
-  return { alunos, fetchStudents, handleAddAluno, deleteAluno};
-
-
+  return { alunos, fetchStudents, handleAddAluno, deleteAluno };
 };
 
 export default useAlunos;
