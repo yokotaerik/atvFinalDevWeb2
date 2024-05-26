@@ -2,7 +2,7 @@ import api from "@/api/axios";
 import useDisciplina from "@/hooks/useDisciplina";
 import React, { use, useState } from "react";
 
-const CadastrarDisciplina: React.FC = () => {
+const CadastrarDisciplina = ({ onRequest }: any) => {
   const [nome, setNome] = useState("");
   const [ementa, setEmenta] = useState("");
   const [cargaHoraria, setCargaHoraria] = useState(0);
@@ -11,6 +11,7 @@ const CadastrarDisciplina: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     await cadastrarDisciplina(nome, ementa, cargaHoraria);
+    onRequest();
   };
 
   return (

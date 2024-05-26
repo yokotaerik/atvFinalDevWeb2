@@ -1,6 +1,14 @@
 import { prisma } from "../prisma/prisma";
 
 export class DisciplinaService {
+  async deleteDisciplina(id: number) {
+    await prisma.disciplina.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
+  
   async findById(id: number) {
     return await prisma.disciplina.findFirst({
       where:{
@@ -29,7 +37,6 @@ export class DisciplinaService {
   }
 
   async editarDisciplina(id: number, cargaHoraria: number, ementa: string) {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     await prisma.disciplina.update({
       where: {
         id: id,

@@ -1,6 +1,6 @@
 import api from "@/api/axios";
-import useCurso from "@/hooks/useCurso.";
-import React, { useState } from "react";
+import useCurso, { CursoDTO } from "@/hooks/useCurso.";
+import React, { useEffect, useState } from "react";
 
 interface MatricularNoCursoProps {
   idAluno: number;
@@ -9,7 +9,12 @@ interface MatricularNoCursoProps {
 
 const MatricularAlunoNoCurso = ({ idAluno, onRequest }: MatricularNoCursoProps) => {
   const [selectedCurso, setSelectedCurso] = useState<number | null>(null);
-  const { cursos } = useCurso();
+  const [cursos, setCursos] = useState<CursoDTO[]>();
+  const { fetchCursos } = useCurso();
+
+  useEffect(() => {
+    fetchCursos().then((data) => setCursos(data));
+  }, []);
 
   const handleCursoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const cursoId = parseInt(event.target.value);
@@ -48,11 +53,11 @@ const MatricularAlunoNoCurso = ({ idAluno, onRequest }: MatricularNoCursoProps) 
           onChange={handleCursoChange}
         >
           <option value="">Selecione um curso</option>
-          {cursos.map((curso) => (
+          {cursos ? cursos.map((curso) => (
             <option key={curso.id} value={curso.id}>
               {curso.nome}
             </option>
-          ))}
+          )) : null}
         </select>
         <button
           className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

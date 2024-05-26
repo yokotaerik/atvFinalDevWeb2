@@ -8,7 +8,13 @@ const Alunos: React.FC = () => {
   const { fetchStudents, deleteAluno } = useAlunos();
   const [alunos, setAlunos] = useState<AlunoDTO[]>([]);
 
-  const updateAlunos = () => {
+  const handleDelete = (id: number) => {
+    deleteAluno(id).then(() => {
+      updateAlunos();
+    });
+  } 
+
+  const updateAlunos = async () => {
     fetchStudents().then((data) => {
       console.log(data);
       setAlunos(data);
@@ -16,7 +22,7 @@ const Alunos: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchStudents().then((data) => setAlunos(data));
+    updateAlunos();
   }, []);
 
   return (
@@ -42,7 +48,7 @@ const Alunos: React.FC = () => {
                 </Link>
                 <button
                   className="p-1 bg-red-500 rounded-md"
-                  onClick={() => {deleteAluno(aluno.id); updateAlunos()}}
+                  onClick={() => handleDelete(aluno.id)}
                 >
                   Deletar aluno
                 </button>

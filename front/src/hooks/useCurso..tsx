@@ -1,6 +1,7 @@
 import api from "@/api/axios";
 import { useState, useEffect } from "react";
 import { AlunoDTO } from "./useAlunos";
+import { useRouter } from "next/router";
 
 export interface CursoDTO {
   id: number;
@@ -19,16 +20,16 @@ export interface DisciplinaDTO {
 }
 
 const useCurso = () => {
-  const [cursos, setCursos] = useState<CursoDTO[]>([]);
 
   const fetchCursos = async () => {
     try {
       const response = await api.get("/curso/todos");
-      setCursos(response.data);
+      return response.data
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
   useEffect(() => {
     fetchCursos();
   }, []);
@@ -45,7 +46,7 @@ const useCurso = () => {
     }
   };
 
-  return { cursos, fetchCursos, cadastrarCurso };
+  return { fetchCursos, cadastrarCurso };
 };
 
 export default useCurso;

@@ -3,14 +3,24 @@ import Disciplina from "@/components/disciplina";
 import CadastrarDisciplina from "@/components/cadastrarDisciplina";
 import useDisciplina from "@/hooks/useDisciplina";
 import Link from "next/link";
+import { DisciplinaDTO } from "@/hooks/useCurso.";
 
 const Disciplinas: React.FC = () => {
-  const { disciplinas } = useDisciplina();
+  const { buscarDisciplinas } = useDisciplina();
+  const [disciplinas, setDisciplinas] = useState<DisciplinaDTO[]>([]);
+
+  useEffect(() => {
+    updateDisciplinas();
+  }, []);
+
+  const updateDisciplinas = () => {
+    buscarDisciplinas().then((data) => setDisciplinas(data));
+  };
 
   return (
     <div className="container mx-auto flex">
       <div className="w-1/3">
-        <CadastrarDisciplina />
+        <CadastrarDisciplina onRequest={updateDisciplinas} />F
       </div>
 
       <div className="w-2/3">

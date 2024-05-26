@@ -1,6 +1,7 @@
 import api from '@/api/axios';
+import { DisciplinaDTO } from '@/hooks/useCurso.';
 import useDisciplina from '@/hooks/useDisciplina';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface MatricularAlunoNaDisciplinaProps {
     alunoId: number;
@@ -9,7 +10,12 @@ interface MatricularAlunoNaDisciplinaProps {
 
 const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = ({ alunoId , onRequest }) => {
     const [disciplinasSelecionadas, setDisciplinasSelecionadas] = useState<string[]>([]);
-    const { disciplinas } = useDisciplina();
+    const [disciplinas, setDisciplinas] = useState<DisciplinaDTO[]>()
+    const { buscarDisciplinas } = useDisciplina();
+
+    useEffect(() => {
+        buscarDisciplinas().then((data) => setDisciplinas(data));
+    }, [])
 
     const handleMudancaDisciplina = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const idDisciplinaSelecionada = event.target.value;
@@ -40,6 +46,10 @@ const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = 
             alert('Erro ao matricular aluno nas disciplinas');
         }
     };
+
+    if(disciplinas === undefined) {
+        return <div>Loading...</div>
+    }
 
     return (
         <form onSubmit={handleSubmit} className='flex flex-col'>

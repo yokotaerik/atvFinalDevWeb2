@@ -33,7 +33,7 @@ const CursoDetails = () => {
     <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4">{curso.nome}</h1>
       <p className="mb-2">Horas Totais: {curso.horasTotais}</p>
-      <AdicionarisciplinaAoCurso idCurso={Number(id)} />
+      <AdicionarisciplinaAoCurso idCurso={Number(id)} onRequest={findById}/>
       <h2 className="text-xl font-bold mt-4">Disciplinas:</h2>
       <ul className="list-disc pl-6 mb-4">
         {curso.disciplinas.map((disciplina) => (

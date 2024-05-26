@@ -1,18 +1,27 @@
 import api from "@/api/axios";
+import { DisciplinaDTO } from "@/hooks/useCurso.";
 import useDisciplina from "@/hooks/useDisciplina";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface AdicionarisciplinaAoCursoProps {
   idCurso: number;
+  onRequest: any
 }
 
 const AdicionarisciplinaAoCurso: React.FC<AdicionarisciplinaAoCursoProps> = ({
-  idCurso,
-}) => {
-  const [disciplinasSelecionadas, setDisciplinasSelecionadas] = useState<
-    string[]
-  >([]);
-  const { disciplinas } = useDisciplina();
+  idCurso, onRequest}) => {
+  const [disciplinasSelecionadas, setDisciplinasSelecionadas] = useState<string[]>([]);
+  const { buscarDisciplinas } = useDisciplina();
+  const [disciplinas, setDisciplinas] = useState<DisciplinaDTO[]>([]);
+
+  const updateDisciplinas = async () => {
+    const disciplinas = await buscarDisciplinas();
+    setDisciplinas(disciplinas);
+  };
+
+  useEffect(() => {
+    updateDisciplinas();
+  }, []);
 
   const handleMudancaDisciplina = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -41,6 +50,7 @@ const AdicionarisciplinaAoCurso: React.FC<AdicionarisciplinaAoCursoProps> = ({
       });
       if (response.status === 200) {
         alert("Disciplina adicionada com sucesso");
+        onRequest();
       }
     } catch (error) {
       alert(

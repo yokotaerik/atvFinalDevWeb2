@@ -1,7 +1,7 @@
 import useCurso from "@/hooks/useCurso.";
 import React, { useState } from "react";
 
-const CadastrarCursoForm = () => {
+const CadastrarCursoForm = ({onRequest }: any) => {
   const { cadastrarCurso } = useCurso();
   const [nomeCurso, setNomeCurso] = useState("");
 
@@ -14,6 +14,7 @@ const CadastrarCursoForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await cadastrarCurso(nomeCurso);
+    onRequest();
   };
 
   return (

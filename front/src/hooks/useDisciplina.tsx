@@ -8,14 +8,11 @@ const useDisciplina = () => {
   const buscarDisciplinas = async () => {
     try {
       const resposta = await api.get("/disciplina/todos");
-      setDisciplinas(resposta.data);
+      return resposta.data
     } catch (erro) {
       console.error("Erro ao buscar disciplinas:", erro);
     }
   };
-  useEffect(() => {
-    buscarDisciplinas();
-  }, []);
 
   const cadastrarDisciplina = async (
     nome: string,
@@ -37,7 +34,7 @@ const useDisciplina = () => {
     }
   };
 
-  return { disciplinas, cadastrarDisciplina };
+  return { buscarDisciplinas, cadastrarDisciplina };
 };
 
 export default useDisciplina;

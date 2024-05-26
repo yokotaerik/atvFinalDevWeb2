@@ -28,6 +28,11 @@ export class DisciplinaController {
     } catch (error) {
       res.status(400).send("Erro ao editar disciplina");
     }
-    
+  }
+
+  async deleteDisciplinaById(req: Request, res: Response) {
+    const id = req.params.id;
+    await disciplinaService.deleteDisciplina(Number(id));
+    res.status(200).send("Disciplina deletada com sucesso!");
   }
 }

@@ -1,10 +1,21 @@
 import CadastrarCursoForm from "@/components/cadastrarCurso";
-import useCurso from "@/hooks/useCurso.";
+import useCurso, { CursoDTO } from "@/hooks/useCurso.";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Cursos: React.FC = () => {
-  const { cursos } = useCurso();
+  const { fetchCursos } = useCurso();
+  const [cursos, setCursos] = useState<CursoDTO[]>([]);
+
+  useEffect(() => {
+    updateCursos();
+  }, []);
+
+  const updateCursos = async () => {
+    fetchCursos().then((data) => {
+      setCursos(data);
+    });
+  }
 
   return (
     <div className="flex">
@@ -14,7 +25,9 @@ const Cursos: React.FC = () => {
           {cursos.length > 0 ? (
             cursos.map((curso) => (
               <Link href={`/cursos/${curso.id}`} key={curso.id}>
-                <li className="cursor-pointer hover:text-blue-500">{curso.nome}</li>
+                <li className="cursor-pointer hover:text-blue-500">
+                  {curso.nome}
+                </li>
               </Link>
             ))
           ) : (
@@ -23,10 +36,11 @@ const Cursos: React.FC = () => {
         </ul>
       </div>
       <div className="w-1/2 p-4">
-        <CadastrarCursoForm />
+        <CadastrarCursoForm onRequest={updateCursos}  />
       </div>
     </div>
   );
 };
 
 export default Cursos;
+ 

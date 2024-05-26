@@ -77,7 +77,7 @@ export class AlunoController {
     }
   }
 
-  async edtairAluno(req: Request, res: Response) {
+  async editarAluno(req: Request, res: Response) {
     try {
       const { id, nome, email } = req.body;
       await alunoService.editarAluno(id, nome, email);

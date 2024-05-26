@@ -20,6 +20,9 @@ const CadastrarAlunoForm = ({ onRequest }: CadastrarAlunoFormProps) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await handleAddAluno(nome, cpf, email);
+    setNome("");
+    setCpf("");
+    setEmail("");
     onRequest();
   };
 

@@ -35,11 +35,22 @@ export class CursoService {
     }
   }
 
-  criarCurso = async (nome: string) => {
+  criarCurso = async (nome: string, duracao: number, descricao: string, horasTotais: number) => {
     await prisma.curso.create({
       data: {
         nome,
+        duracao,
+        descricao,
+        horasTotais,
       },
     });
   };
+
+  deleteCurso = async (id: number) => {
+    await prisma.curso.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

@@ -15,8 +15,8 @@ export class CursoController {
   }
   
   async cadastrarCurso(req: Request, res: Response) {
-    const { nome } = req.body;
-    await cursoService.criarCurso(nome);
+    const { nome, descricao, duracao, horasTotais} = req.body;
+    await cursoService.criarCurso(nome, descricao, duracao, horasTotais);
     res.status(201).send("Curso cadastrado com sucesso!");
   }
 
@@ -24,5 +24,11 @@ export class CursoController {
     const { idCurso, disciplinas } = req.body;
     await cursoService.adicionarDisciplinaAoCurso(idCurso, disciplinas);
     res.status(200).send("Disciplina adicionada ao curso com sucesso!");
+  }
+
+  async deleteCursoById(req: Request, res: Response) {
+    const id = req.params.id;
+    await cursoService.deleteCurso(Number(id));
+    res.status(200).send("Curso deletado com sucesso!");
   }
 }
