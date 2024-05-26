@@ -2,50 +2,66 @@ import { prisma } from "../prisma/prisma";
 
 export class DisciplinaService {
   async deleteDisciplina(id: number) {
-    await prisma.disciplina.delete({
-      where: {
-        id: id,
-      },
-    });
+    try {
+      await prisma.disciplina.delete({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      // Trate o erro aqui
+    }
   }
   
   async findById(id: number) {
-    return await prisma.disciplina.findFirst({
-      where:{
-        id
-      },
-      include:{
-        alunos: {
-          where: {
-            status: "Matriculado"
-          },
-          include: {
-            aluno: {
-              include: {
-                curso: true
-              }
-            }
-          },
+    try {
+      return await prisma.disciplina.findFirst({
+        where:{
+          id
         },
-        cursos: true
-      }
-    })
+        include:{
+          alunos: {
+            where: {
+              status: "Matriculado"
+            },
+            include: {
+              aluno: {
+                include: {
+                  curso: true
+                }
+              }
+            },
+          },
+          cursos: true
+        }
+      });
+    } catch (error) {
+      // Trate o erro aqui
+    }
   }
 
   async listarDisciplinas() {
-    return await prisma.disciplina.findMany();
+    try {
+      return await prisma.disciplina.findMany();
+    } catch (error) {
+      // Trate o erro aqui
+    }
   }
 
   async editarDisciplina(id: number, cargaHoraria: number, ementa: string) {
-    await prisma.disciplina.update({
-      where: {
-        id: id,
-      },
-      data: {
-        cargaHoraria: cargaHoraria,
-        ementa: ementa,
-      },
-    });
+    try {
+      await prisma.disciplina.update({
+        where: {
+          id: id,
+        },
+        data: {
+          cargaHoraria: cargaHoraria,
+          ementa: ementa,
+        },
+      });
+    } catch (error) {
+      // Trate o erro aqui
+    }
   }
 
   criarDisciplina = async (
@@ -53,12 +69,16 @@ export class DisciplinaService {
     cargaHoraria: number,
     ementa: string
   ) => {
-    await prisma.disciplina.create({
-      data: {
-        nome,
-        cargaHoraria,
-        ementa,
-      },
-    });
+    try {
+      await prisma.disciplina.create({
+        data: {
+          nome,
+          cargaHoraria,
+          ementa,
+        },
+      });
+    } catch (error) {
+      // Trate o erro aqui
+    }
   };
 }

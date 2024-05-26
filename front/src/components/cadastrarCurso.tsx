@@ -1,9 +1,12 @@
 import useCurso from "@/hooks/useCurso.";
 import React, { useState } from "react";
 
-const CadastrarCursoForm = ({onRequest }: any) => {
+const CadastrarCursoForm = ({ onRequest }: any) => {
   const { cadastrarCurso } = useCurso();
   const [nomeCurso, setNomeCurso] = useState("");
+  const [duracao, setDuracao] = useState("");
+  const [horasTotais, setHorasTotais] = useState("");
+  const [descricao, setDescricao] = useState("");
 
   const handleNomeCursoChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -11,9 +14,27 @@ const CadastrarCursoForm = ({onRequest }: any) => {
     setNomeCurso(event.target.value);
   };
 
+  const handleDuracaoChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDuracao(event.target.value);
+  };
+
+  const handleHorasTotaisChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setHorasTotais(event.target.value);
+  };
+
+  const handleDescricaoChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDescricao(event.target.value);
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await cadastrarCurso(nomeCurso);
+    await cadastrarCurso(nomeCurso, Number(duracao), Number(horasTotais), descricao);
     onRequest();
   };
 
@@ -25,6 +46,33 @@ const CadastrarCursoForm = ({onRequest }: any) => {
           type="text"
           value={nomeCurso}
           onChange={handleNomeCursoChange}
+          className="border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </label>
+      <label className="mb-4">
+        Duração:
+        <input
+          type="text"
+          value={duracao}
+          onChange={handleDuracaoChange}
+          className="border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </label>
+      <label className="mb-4">
+        Horas Totais:
+        <input
+          type="text"
+          value={horasTotais}
+          onChange={handleHorasTotaisChange}
+          className="border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </label>
+      <label className="mb-4">
+        Descrição:
+        <input
+          type="text"
+          value={descricao}
+          onChange={handleDescricaoChange}
           className="border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </label>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "@/api/axios";
 import { DisciplinaDTO } from "@/hooks/useCurso.";
 import { Router, useRouter } from "next/router";
-import { AlunoDTO } from "@/hooks/useAlunos";
 
 const Disciplina: React.FC = () => {
   const router = useRouter();
@@ -47,12 +46,24 @@ const Disciplina: React.FC = () => {
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold mb-4">{disciplina?.nome}</h1>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setEditar(true)}
-      >
-        Editar
-      </button>
+      <div className="flex gap-2">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setEditar(true)}
+        >
+          Editar
+        </button>
+        <button
+          className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() =>
+            api
+              .delete(`/disciplina/${id}`)
+              .then(() => router.push("/disciplinas"))
+          }
+        >
+          Deletar
+        </button>
+      </div>
       <form className="flex flex-col mt-4">
         <label className="mb-2">Carga Horária:</label>
         <input
@@ -74,7 +85,11 @@ const Disciplina: React.FC = () => {
         />
       </form>
       <button
-        className={`${!editar ? "hidden" : "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"}`}
+        className={`${
+          !editar
+            ? "hidden"
+            : "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+        }`}
         onClick={() => updateDisciplina()}
         disabled={!editar}
       >

@@ -8,6 +8,8 @@ export interface CursoDTO {
   nome: string;
   disciplinas: DisciplinaDTO[];
   horasTotais: number;
+  duracao: number;
+  descricao: string;
   alunos: AlunoDTO[];
 }
 
@@ -34,9 +36,9 @@ const useCurso = () => {
     fetchCursos();
   }, []);
 
-  const cadastrarCurso = async (nome: string) => {
+  const cadastrarCurso = async (nomeCurso: string, duracao: number, horasTotais: number, descricao: string) => {
     try {
-      const response = await api.post("/curso/criar", { nome });
+      const response = await api.post("/curso/criar", { nome: nomeCurso, duracao, horasTotais, descricao });
       if (response.status == 201) {
         alert("Curso cadastrado com sucesso");
         await fetchCursos();

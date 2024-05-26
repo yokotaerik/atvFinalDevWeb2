@@ -2,55 +2,80 @@ import { prisma } from "../prisma/prisma";
 
 export class CursoService {
   async todosCursos() {
-    return await prisma.curso.findMany();
+    try {
+      return await prisma.curso.findMany();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async findById(id: number) {
-    return await prisma.curso.findFirst({
-      where: {
-        id,
-      },
-      include: {
-        disciplinas: true,
-        alunos: true,
-      },
-    });
+    try {
+      return await prisma.curso.findFirst({
+        where: {
+          id,
+        },
+        include: {
+          disciplinas: true,
+          alunos: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async adicionarDisciplinaAoCurso(idCurso: number, disciplinas: number[]) {
-    console.log(idCurso, disciplinas)
+    console.log(idCurso, disciplinas);
     for (const idDisciplina of disciplinas) {
-      await prisma.curso.update({
-        where: {
-          id: idCurso,
-        },
-        data: {
-          disciplinas: {
-            connect: {
-              id: idDisciplina,
+      try {
+        await prisma.curso.update({
+          where: {
+            id: idCurso,
+          },
+          data: {
+            disciplinas: {
+              connect: {
+                id: idDisciplina,
+              },
             },
           },
-        },
-      });
+        });
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
     }
   }
 
   criarCurso = async (nome: string, duracao: number, descricao: string, horasTotais: number) => {
-    await prisma.curso.create({
-      data: {
-        nome,
-        duracao,
-        descricao,
-        horasTotais,
-      },
-    });
+    try {
+      await prisma.curso.create({
+        data: {
+          nome,
+          duracao,
+          descricao,
+          horasTotais,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   deleteCurso = async (id: number) => {
-    await prisma.curso.delete({
-      where: {
-        id,
-      },
-    });
-  }
+    try {
+      await prisma.curso.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 }
