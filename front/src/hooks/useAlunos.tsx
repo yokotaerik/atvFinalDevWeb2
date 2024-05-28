@@ -6,15 +6,20 @@ import { cp } from "fs";
 export interface AlunoDTO {
   id: number;
   nome: string;
+  email: string;
+  cpf: string;
   curso: CursoDTO | null;
-  disciplinas: DisciplinaAlunoDTO[];
+  disciplinasMatriculado: DisciplinaAlunoDTO[];
+  disciplinasTrancado: DisciplinaAlunoDTO[];
+  disciplinasCursado: DisciplinaAlunoDTO[];
+
 }
 
 export interface DisciplinaAlunoDTO {
   id: number;
   status: string;
   disciplina: DisciplinaDTO;
-  data: string;
+  data: Date
 }
 
 const useAlunos = () => {
@@ -47,22 +52,7 @@ const useAlunos = () => {
     }
   };
 
-  const deleteAluno = async (id: number) => {
-    try {
-      const response = await api.delete(`/aluno/${id}`);
-      if (response.status === 200) {
-        alert("Aluno deletado com sucesso!");
-        await fetchStudents();
-      }
-    } catch (error) {
-      console.error(error);
-      alert(
-        "Erro ao deletar aluno! (Se o aluno estiver com alguma matricula ou disciplina ativa não será possivél deleta-lo)"
-      );
-    }
-  };
-
-  return { alunos, fetchStudents, handleAddAluno, deleteAluno };
+  return { alunos, fetchStudents, handleAddAluno };
 };
 
 export default useAlunos;

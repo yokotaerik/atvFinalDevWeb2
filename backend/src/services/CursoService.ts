@@ -1,6 +1,25 @@
 import { prisma } from "../prisma/prisma";
 
 export class CursoService {
+  editarCurso(id: number, nome: string, duracao: number, descricao: string, horasTotais: number) {
+    try {
+      prisma.curso.update({
+        where: {
+          id,
+        },
+        data: {
+          nome,
+          duracao,
+          descricao,
+          horasTotais,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  
   async todosCursos() {
     try {
       return await prisma.curso.findMany();
@@ -17,7 +36,11 @@ export class CursoService {
           id,
         },
         include: {
-          disciplinas: true,
+          disciplinas: {
+            include: {
+              disciplina: true,
+            },
+          },
           alunos: true,
         },
       });
@@ -31,16 +54,10 @@ export class CursoService {
     console.log(idCurso, disciplinas);
     for (const idDisciplina of disciplinas) {
       try {
-        await prisma.curso.update({
-          where: {
-            id: idCurso,
-          },
+        await prisma.cursoDisciplina.create({
           data: {
-            disciplinas: {
-              connect: {
-                id: idDisciplina,
-              },
-            },
+            cursoId: idCurso,
+            disciplinaId: idDisciplina,
           },
         });
       } catch (error) {
@@ -66,8 +83,24 @@ export class CursoService {
     }
   };
 
+  
   deleteCurso = async (id: number) => {
     try {
+      await prisma.aluno.updateMany({
+        where: {
+          cursoId: id,
+        },
+        data: {
+          cursoId: null,
+        },
+      });
+
+      await prisma.cursoDisciplina.deleteMany({
+        where: {
+          cursoId: id,
+        },
+      });
+
       await prisma.curso.delete({
         where: {
           id,
@@ -78,4 +111,6 @@ export class CursoService {
       throw error;
     }
   };
+
+  
 }

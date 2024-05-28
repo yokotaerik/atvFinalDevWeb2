@@ -12,15 +12,26 @@ const CursoDetails = () => {
 
   const updateCurso = async () => {
     console.log(curso);
-    // try {
-    //   const response = await api.put(`/curso/editar/${id}`, curso);
-    //   if (response.status === 200) {
-    //     setEditar(false);
-    //   }
-    // } catch (error) {
-    //   alert("Erro ao atualizar curso");
-    // }
+    try {
+      const response = await api.put(`/curso/editar/${id}`, curso);
+      if (response.status === 200) {
+        setEditar(false);
+      }
+    } catch (error) {
+      alert("Erro ao atualizar curso");
+    }
   };
+
+  const deleteCurso = async () => {
+    try {
+      const response = await api.delete(`/curso/${id}`);
+      if (response.status === 200) {
+        router.push("/cursos");
+      }
+    } catch (error) {
+      alert("Erro ao deletar curso");
+    }
+  }
 
   const findById = async (id: number) => {
     try {
@@ -99,9 +110,7 @@ const CursoDetails = () => {
         <button
           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() =>
-            api
-              .delete(`/curso/${id}`)
-              .then(() => router.push("/cursos"))
+            window.confirm("Deseja realmente deletar esse curso?") && deleteCurso()
           }
         >
           Deletar
@@ -111,7 +120,7 @@ const CursoDetails = () => {
       <h2 className="text-xl font-bold mt-4">Disciplinas:</h2>
       <ul className="list-disc pl-6 mb-4">
         {curso.disciplinas.map((disciplina) => (
-          <li key={disciplina.id}>{disciplina.nome}</li>
+          <li key={disciplina.id}>{disciplina.disciplina.nome}</li>
         ))}
       </ul>
       <h2 className="text-xl font-bold">Alunos:</h2>

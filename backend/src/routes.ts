@@ -16,8 +16,10 @@ routes.post("/api/aluno/matricular/disciplina", alunoController.matricularAlunoN
 routes.post("/api/aluno/matricular/curso", alunoController.matricularAlunoNoCurso)
 routes.get("/api/aluno/todos", alunoController.todosAlunos)
 routes.get("/api/aluno/porId/:id", alunoController.findById)
-routes.put("/api/aluno/atualizar/status/disciplina", alunoController.atualizarStatusDisciplina)
-routes.delete("/api/aluno/:id", alunoController.deleteAluno)
+routes.put("/api/aluno/trancarDisciplina", alunoController.trancarDisciplina)
+routes.put("/api/aluno/concluirDisciplina", alunoController.concluirDisciplina)
+routes.delete("/api/aluno/deletar/:id", alunoController.deleteAluno)
+routes.put("/api/aluno/editar/:id", alunoController.editarAluno)
 
 // Curso
 routes.get("/api/curso/porId/:id", cursoController.findById)
@@ -25,6 +27,7 @@ routes.get("/api/curso/todos", cursoController.todosCursos)
 routes.post("/api/curso/criar", cursoController.cadastrarCurso)
 routes.post("/api/curso/adicionar_disciplina", cursoController.adicionarDisciplinaAoCurso)
 routes.delete("/api/curso/:id", cursoController.deleteCursoById)
+routes.put("/api/curso/editar/:id", cursoController.editarCurso)
 
 // Disciplinas
 routes.get("/api/disciplina/porId/:id", disciplinaController.findById)

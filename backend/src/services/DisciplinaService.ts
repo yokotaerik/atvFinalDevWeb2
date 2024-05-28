@@ -20,10 +20,7 @@ export class DisciplinaService {
           id
         },
         include:{
-          alunos: {
-            where: {
-              status: "Matriculado"
-            },
+          alunosAtivos: {
             include: {
               aluno: {
                 include: {
@@ -81,4 +78,5 @@ export class DisciplinaService {
       // Trate o erro aqui
     }
   };
+
 }

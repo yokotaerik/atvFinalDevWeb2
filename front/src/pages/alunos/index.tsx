@@ -5,14 +5,9 @@ import Link from "next/link";
 import React, { useState, useEffect, use } from "react";
 
 const Alunos: React.FC = () => {
-  const { fetchStudents, deleteAluno } = useAlunos();
+  const { fetchStudents } = useAlunos();
   const [alunos, setAlunos] = useState<AlunoDTO[]>([]);
 
-  const handleDelete = (id: number) => {
-    deleteAluno(id).then(() => {
-      updateAlunos();
-    });
-  } 
 
   const updateAlunos = async () => {
     fetchStudents().then((data) => {
@@ -33,7 +28,7 @@ const Alunos: React.FC = () => {
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Lista de alunos</h1>
         <div>
-          {alunos.length > 0 ? (
+          {alunos && alunos.length > 0 ? (
             alunos.map((aluno) => (
               <div className="flex justify-between bg-slate-100 p-2 rounded-md shadow-md">
                 <Link href={`/alunos/${aluno.id}`} key={aluno.id}>
@@ -46,12 +41,6 @@ const Alunos: React.FC = () => {
                     )}
                   </div>
                 </Link>
-                <button
-                  className="p-1 bg-red-500 rounded-md"
-                  onClick={() => handleDelete(aluno.id)}
-                >
-                  Deletar aluno
-                </button>
               </div>
             ))
           ) : (

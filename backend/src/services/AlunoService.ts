@@ -2,32 +2,18 @@ import { prisma } from "../prisma/prisma";
 
 export class AlunoService {
   async deleteAluno(id: number) {
-    const alunoDeletado = await prisma.aluno.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        curso: true,
-        disciplinas: {},
-      },
-    });
-
-    if (!alunoDeletado) throw new Error("Aluno não encontrado.");
-
-    if (
-      alunoDeletado?.disciplinas.some(async (disciplina) => {
-        disciplina.status = "Matriculado";
-      })
-    ) {
-      throw new Error(
-        "Aluno não pode ser deletado pois está matriculado em uma disciplina."
-      );
-    } else {
-      await prisma.aluno.delete({
+    try {
+      const alunoDeletado = await prisma.aluno.findUnique({
         where: {
           id,
         },
+        include: {
+          curso: true,
+          disciplinasMatriculado: {},
+        },
       });
+    } catch (error) {
+      console.error("Erro ao deletar aluno:", error);
     }
   }
 
@@ -38,7 +24,17 @@ export class AlunoService {
       },
       include: {
         curso: true,
-        disciplinas: {
+        disciplinasCursado: {
+          include: {
+            disciplina: true,
+          },
+        },
+        disciplinasMatriculado: {
+          include: {
+            disciplina: true,
+          },
+        },
+        disciplinasTrancado: {
           include: {
             disciplina: true,
           },
@@ -46,6 +42,7 @@ export class AlunoService {
       },
     });
   }
+  
   async todosAlunos() {
     return await prisma.aluno.findMany({
       include: {
@@ -89,7 +86,7 @@ export class AlunoService {
         }
 
         // Criar uma nova entrada na tabela AlunoDisciplinaStatus
-        const alunoDisciplinaStatus = await prisma.alunoDisciplinaStatus.create(
+        const alunoDisciplinaStatus = await prisma.alunoDisciplinaMatriculado.create(
           {
             data: {
               aluno: {
@@ -98,7 +95,6 @@ export class AlunoService {
               disciplina: {
                 connect: { id: disciplinaId },
               },
-              status: status,
             },
           }
         );
@@ -113,17 +109,6 @@ export class AlunoService {
     } finally {
       await prisma.$disconnect();
     }
-  }
-
-  async atualizarStatusDisciplina(id: number, status: string) {
-    await prisma.alunoDisciplinaStatus.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
-    });
   }
 
   async matricularAluno(idAluno: number, idCurso: number) {
@@ -150,7 +135,7 @@ export class AlunoService {
     });
   };
 
-  editarAluno = async (id: number, nome: string, email: string) => {
+  editarAluno = async (id: number, nome: string, email: string, cpf: string) => {
     await prisma.aluno.update({
       where: {
         id,
@@ -158,6 +143,7 @@ export class AlunoService {
       data: {
         nome,
         email,
+        cpf,
       },
     });
   };

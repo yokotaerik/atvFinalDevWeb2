@@ -22,7 +22,7 @@ const Cursos: React.FC = () => {
       <div className="w-1/2 p-4">
         <h1 className="text-2xl font-bold mb-4">Lista de cursos</h1>
         <ul>
-          {cursos.length > 0 ? (
+          {cursos && cursos.length > 0 ? (
             cursos.map((curso) => (
               <Link href={`/cursos/${curso.id}`} key={curso.id}>
                 <li className="cursor-pointer hover:text-blue-500">

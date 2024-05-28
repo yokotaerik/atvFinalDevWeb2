@@ -96,7 +96,7 @@ const Disciplina: React.FC = () => {
         Salvar
       </button>
       <h2 className="text-xl font-bold mt-4">Alunos:</h2>
-      {disciplina?.alunos?.map((relacao: any) => (
+      {disciplina && disciplina?.alunos?.map((relacao: any) => (
         <div
           key={relacao.id}
           className="border border-gray-300 rounded p-4 mb-4"
@@ -104,7 +104,7 @@ const Disciplina: React.FC = () => {
           <p className="mb-2">Nome: {relacao.aluno.nome}</p>
           <p>
             Curso:
-            {relacao.aluno.curso.nome
+            {relacao.aluno.curso && relacao.aluno.curso.nome
               ? relacao.aluno.curso.nome
               : "Não está matriculado em nenhum curso"}
           </p>

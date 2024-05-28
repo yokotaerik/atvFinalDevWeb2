@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 export interface CursoDTO {
   id: number;
   nome: string;
-  disciplinas: DisciplinaDTO[];
+  disciplinas: any[];
   horasTotais: number;
   duracao: number;
   descricao: string;

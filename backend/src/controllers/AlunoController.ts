@@ -1,16 +1,44 @@
+import { prisma } from "../prisma/prisma";
 import { AlunoService } from "../services/AlunoService";
 import { Request, Response } from "express";
 
 const alunoService = new AlunoService();
 
 export class AlunoController {
-  deleteAluno(req: Request, res: Response) {
+  async deleteAluno(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      alunoService.deleteAluno(id);
-      res.status(200).send("Aluno deletado com sucesso!");
-    } catch (error: any) {
-      res.status(500).send(error.message);
+
+      const alunoDeletado = await prisma.aluno.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          curso: true,
+          disciplinasMatriculado: {},
+        },
+      });
+
+      if (!alunoDeletado) res.status(404).send("Aluno não encontrado.");
+
+      if (
+        alunoDeletado?.disciplinasMatriculado === undefined
+      ) {
+        res
+          .status(400)
+          .send(
+            "Aluno não pode ser deletado pois está matriculado em uma disciplina."
+          );
+      } else {
+        await prisma.aluno.delete({
+          where: {
+            id,
+          },
+        });
+        res.status(200).send("Aluno deletado com sucesso!");
+      }
+    } catch (error) {
+      res.status(500).send("Erro ao deletar aluno");
     }
   }
 
@@ -47,6 +75,27 @@ export class AlunoController {
   async matricularAlunoNaDisciplina(req: Request, res: Response) {
     try {
       const { idAluno, disciplinas } = req.body;
+
+      for (const disciplina of disciplinas) {
+        const jaCursou = await prisma.alunoDisciplinaCursado.findFirst({
+          where: {
+            alunoId: idAluno,
+            disciplinaId: disciplina
+          }
+        })
+        const estaCursando = await prisma.alunoDisciplinaMatriculado.findFirst({
+          where: {
+            alunoId: idAluno,
+            disciplinaId: disciplina
+          }
+        })
+        if(jaCursou || estaCursando){
+          res.status(400).send("Aluno já concluiu essa disciplina")
+          return
+        }
+      }
+
+
       await alunoService.adicionarDisciplinaAoAluno(
         idAluno,
         disciplinas,
@@ -55,6 +104,49 @@ export class AlunoController {
       res.status(200).send("Aluno matriculado na disciplina com sucesso!");
     } catch (error: any) {
       res.status(500).send(error.message);
+    }
+  }
+
+  async concluirDisciplina(req: Request, res: Response){
+    try {
+      const { idAluno, disciplinaId } = req.body;
+      await prisma.alunoDisciplinaMatriculado.deleteMany({
+        where: {
+            disciplinaId,
+            alunoId: idAluno
+          }
+        })
+        await prisma.alunoDisciplinaCursado.create({
+          data: {
+            alunoId: idAluno,
+            disciplinaId,
+          }
+        })
+        res.status(200).send("Disciplina concluída com sucesso")
+    } catch (error) {
+      console.log(error)
+      res.status(500).send("Erro ao concluir disciplina")
+    }
+  }
+
+  async trancarDisciplina(req: Request, res: Response){
+    try {
+      const { idAluno, disciplinaId } = req.body;
+      await prisma.alunoDisciplinaMatriculado.deleteMany({
+        where: {
+            disciplinaId,
+            alunoId: idAluno
+          }
+        })
+        await prisma.alunoDisciplinaTrancado.create({
+          data: {
+            alunoId: idAluno,
+            disciplinaId,
+          }
+        })
+        res.status(200).send("Disciplina trancada com sucesso")
+    } catch (error) {
+      res.status(500).send("Erro ao concluir disciplina")
     }
   }
 
@@ -67,20 +159,10 @@ export class AlunoController {
     }
   }
 
-  async atualizarStatusDisciplina(req: Request, res: Response) {
-    try {
-      const { id, status } = req.body;
-      await alunoService.atualizarStatusDisciplina(id, status);
-      res.status(200).send("Status da disciplina atualizado com sucesso!");
-    } catch (error: any) {
-      res.status(500).send(error.message);
-    }
-  }
-
   async editarAluno(req: Request, res: Response) {
     try {
-      const { id, nome, email } = req.body;
-      await alunoService.editarAluno(id, nome, email);
+      const { id, nome, email, cpf } = req.body;
+      await alunoService.editarAluno(id, nome, email, cpf);
       res.status(200).send("Aluno editado com sucesso!");
     } catch (error: any) {
       res.status(500).send(error.message);

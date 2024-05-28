@@ -3,6 +3,20 @@ import { Request, Response } from "express";
 
 const cursoService = new CursoService();
 export class CursoController {
+  editarCurso(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { nome, descricao, duracao, horasTotais } = req.body;
+      if (!nome || !descricao || !duracao || !horasTotais) {
+        res.status(400).send("Campos obrigatórios não fornecidos");
+        return;
+      }
+      cursoService.editarCurso(Number(id), nome, duracao, descricao, horasTotais);
+    } catch (error) {
+      res.status(500).send("Erro ao editar curso");
+    }
+  }
+
   async todosCursos(req: Request, res: Response) {
     try {
       const cursos = await cursoService.todosCursos();
@@ -47,9 +61,11 @@ export class CursoController {
         res.status(400).send("Campos obrigatórios não fornecidos");
         return;
       }
+      
       await cursoService.adicionarDisciplinaAoCurso(idCurso, disciplinas);
       res.status(200).send("Disciplina adicionada ao curso com sucesso!");
     } catch (error) {
+      console.log(error)
       res.status(500).send("Erro ao adicionar disciplina ao curso");
     }
   }
