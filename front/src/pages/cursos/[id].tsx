@@ -1,5 +1,5 @@
 import useCurso, { CursoDTO } from "@/hooks/useCurso.";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/api/axios";
 import AdicionarisciplinaAoCurso from "@/components/adicionarDisciplinaAoCurso";
@@ -10,8 +10,8 @@ const CursoDetails = () => {
   const [curso, setCurso] = useState<CursoDTO | null>(null);
   const [editar, setEditar] = useState(false);
 
-  const updateCurso = async () => {
-    console.log(curso);
+  const updateCurso = async (e: React.FormEvent ) => {
+    e.preventDefault();
     try {
       const response = await api.put(`/curso/editar/${id}`, curso);
       if (response.status === 200) {
@@ -83,7 +83,7 @@ const CursoDetails = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <form className="flex flex-col">
+      <form className="flex flex-col" onSubmit={updateCurso}>
         <input
           value={curso.nome}
           className="border border-gray-300 rounded p-2 text-2xl font-bold"
@@ -121,8 +121,8 @@ const CursoDetails = () => {
               ? "hidden"
               : "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
           }`}
-          onClick={() => updateCurso()}
           disabled={!editar}
+          type="submit"
         >
           Salvar
         </button>

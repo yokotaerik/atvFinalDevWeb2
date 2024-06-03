@@ -8,7 +8,6 @@ const Disciplina: React.FC = () => {
   const [disciplina, setDisciplina] = useState<DisciplinaDTO>();
   const [novoCargaHoraria, setNovoCargaHoraria] = useState<number>();
   const [novaEmenta, setNovaEmenta] = useState<string>();
-
   const id = router.query.id;
   const [editar, setEditar] = useState(false);
 
@@ -104,7 +103,7 @@ const Disciplina: React.FC = () => {
         Salvar
       </button>
       <h2 className="text-xl font-bold mt-4">Alunos:</h2>
-      {disciplina && disciplina?.alunos?.map((relacao: any) => (
+      {disciplina && disciplina?.alunosAtivos?.map((relacao: any) => (
         <div
           key={relacao.id}
           className="border border-gray-300 rounded p-4 mb-4"

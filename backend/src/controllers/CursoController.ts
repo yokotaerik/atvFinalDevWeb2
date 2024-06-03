@@ -12,6 +12,7 @@ export class CursoController {
         return;
       }
       cursoService.editarCurso(Number(id), nome, duracao, descricao, horasTotais);
+      res.status(200).send("Curso editado com sucesso!")
     } catch (error) {
       res.status(500).send("Erro ao editar curso");
     }
