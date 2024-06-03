@@ -1,6 +1,34 @@
 import { prisma } from "../prisma/prisma";
 
 export class CursoService {
+  async desmatricularAluno(alunoId: number) {
+    try {
+      await prisma.aluno.update({
+        where: {
+          id: alunoId,
+        },
+        data: {
+          cursoId: null,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async deleteDisciplina(idCurso: number, idDisciplina: number) {
+    try {
+      await prisma.cursoDisciplina.delete({
+        where: {
+          cursoId_disciplinaId: {
+            cursoId: idCurso,
+            disciplinaId: idDisciplina,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error)
+    } 
+  }
   editarCurso(id: number, nome: string, duracao: number, descricao: string, horasTotais: number) {
     try {
       prisma.curso.update({

@@ -57,7 +57,11 @@ const MatricularAlunoNaDisciplina: React.FC<MatricularAlunoNaDisciplinaProps> = 
             <div className='mb-4'>
                 {disciplinasSelecionadas.map((idDisciplina) => (
                     <span key={idDisciplina} className='bg-gray-200 px-2 py-1 rounded-md mr-2'>
-                        {disciplinas.find((disciplina) => disciplina.id === Number(idDisciplina))?.nome}
+                        {disciplinas.find((disciplina) => disciplina.id === Number(idDisciplina))?.nome} 
+                        {"  "}<button
+                        className='text-red-500' 
+                        onClick={() => setDisciplinasSelecionadas((disciplinasAnteriores) => disciplinasAnteriores.filter((id) => id !== idDisciplina))}
+                        > X </button>
                     </span>
                 ))}
             </div>

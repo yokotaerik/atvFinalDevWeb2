@@ -37,12 +37,29 @@ const CursoDetails = () => {
     try {
       if (id == undefined) return;
       const response = await api.get(`/curso/porId/${id}`);
+      console.log(response.data);
       setCurso(response.data);
     } catch (error) {
       console.error("Error:", error);
       alert("Erro ao buscar");
     }
   };
+
+  const handleDeleteDisciplina = async (cursoId: number, disciplinaId: number) => {
+    try {
+      const response = await api.delete(`/curso/disciplina/delete`, {
+        data: {
+          cursoId,
+          disciplinaId,
+        },
+      });
+      if (response.status === 200) {
+        findById(Number(id));
+      }
+    } catch (error) {
+      alert("Erro ao deletar disciplina");
+    }
+  }
 
   useEffect(() => {
     if (id != undefined) {
@@ -52,6 +69,16 @@ const CursoDetails = () => {
 
   if (!curso) {
     return <div>Loading...</div>;
+  }
+
+  async function handleDesmatricularAluno(alunoId: number) {
+    try {
+      await api.put(`/curso/desmatricular/${alunoId}`);
+      await findById(Number(id))
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Erro ao desmatricular aluno");
+    }
   }
 
   return (
@@ -118,15 +145,31 @@ const CursoDetails = () => {
       </div>
       <AdicionarisciplinaAoCurso idCurso={Number(id)} onRequest={findById} />
       <h2 className="text-xl font-bold mt-4">Disciplinas:</h2>
-      <ul className="list-disc pl-6 mb-4">
+      <ul className="flex flex-col gap-2">
         {curso.disciplinas.map((disciplina) => (
-          <li key={disciplina.id}>{disciplina.disciplina.nome}</li>
+          <li key={disciplina.id} 
+          className="flex justify-between bg-gray-200 rounded-md px-2 py-1">
+          {disciplina.disciplina.nome} 
+          <button
+          className="bg-red-500 text-white rounded-md px-2 py-1"
+           onClick={() => {window.confirm("Deseja excluir essa disciplina?") && handleDeleteDisciplina(disciplina.cursoId, disciplina.disciplinaId)}}
+          > Excluir disciplina 
+          </button>
+          </li>
         ))}
       </ul>
       <h2 className="text-xl font-bold">Alunos:</h2>
       <ul className="list-disc pl-6">
         {curso.alunos.map((aluno) => (
-          <li key={aluno.id}>{aluno.nome}</li>
+          <li key={aluno.id}
+          className="flex justify-between bg-gray-200 rounded-md px-2 py-1">
+          {aluno.nome}
+          <button
+          className="bg-red-500 text-white rounded-md px-2 py-1"
+           onClick={() => {window.confirm("Deseja desmatricular esse aluno?") && handleDesmatricularAluno(aluno.id)}}
+          > Desmatricular 
+          </button>
+          </li>
         ))}
       </ul>
     </div>

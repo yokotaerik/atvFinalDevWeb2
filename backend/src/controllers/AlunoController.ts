@@ -15,29 +15,27 @@ export class AlunoController {
         },
         include: {
           curso: true,
-          disciplinasMatriculado: {},
+          disciplinasMatriculado: true
         },
       });
 
-      if (!alunoDeletado) res.status(404).send("Aluno não encontrado.");
-
-      if (
-        alunoDeletado?.disciplinasMatriculado === undefined
-      ) {
-        res
-          .status(400)
-          .send(
-            "Aluno não pode ser deletado pois está matriculado em uma disciplina."
-          );
-      } else {
-        await prisma.aluno.delete({
-          where: {
-            id,
-          },
-        });
-        res.status(200).send("Aluno deletado com sucesso!");
+      if (!alunoDeletado) {
+        return res.status(404).send("Aluno não encontrado.");
       }
+
+      if (alunoDeletado.disciplinasMatriculado.length > 0) {
+        return res.status(400).send("Aluno não pode ser deletado pois está matriculado em uma disciplina.");
+      }
+
+      await prisma.aluno.delete({
+        where: {
+          id: alunoDeletado.id,
+        },
+      });
+
+      res.status(200).send("Aluno deletado com sucesso!");
     } catch (error) {
+      console.error("Erro ao deletar aluno:", error);
       res.status(500).send("Erro ao deletar aluno");
     }
   }

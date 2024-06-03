@@ -28,6 +28,8 @@ routes.post("/api/curso/criar", cursoController.cadastrarCurso)
 routes.post("/api/curso/adicionar_disciplina", cursoController.adicionarDisciplinaAoCurso)
 routes.delete("/api/curso/:id", cursoController.deleteCursoById)
 routes.put("/api/curso/editar/:id", cursoController.editarCurso)
+routes.delete("/api/curso/disciplina/delete", cursoController.deleteDisciplina)
+routes.put("/api/curso/desmatricular/:id", cursoController.desmatricularAluno)  
 
 // Disciplinas
 routes.get("/api/disciplina/porId/:id", disciplinaController.findById)

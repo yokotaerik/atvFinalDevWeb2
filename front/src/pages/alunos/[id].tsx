@@ -16,6 +16,7 @@ const AlunoDetails = () => {
       const response = await api.delete(`/aluno/deletar/${id}`);
       if (response.status === 200) {
         alert("Aluno deletado com sucesso");
+        router.push("/alunos");
       }
     } catch (error: any) {
       console.error("Error:", error);

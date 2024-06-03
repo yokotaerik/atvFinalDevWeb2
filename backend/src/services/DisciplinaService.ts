@@ -7,30 +7,34 @@ export class DisciplinaService {
         where: {
           id: id,
         },
+        include: {
+          alunosTrancados: true,
+        },
       });
+      return true
     } catch (error) {
-      // Trate o erro aqui
+      console.log(error);
     }
   }
-  
+
   async findById(id: number) {
     try {
       return await prisma.disciplina.findFirst({
-        where:{
-          id
+        where: {
+          id,
         },
-        include:{
+        include: {
           alunosAtivos: {
             include: {
               aluno: {
                 include: {
-                  curso: true
-                }
-              }
+                  curso: true,
+                },
+              },
             },
           },
-          cursos: true
-        }
+          cursos: true,
+        },
       });
     } catch (error) {
       // Trate o erro aqui
@@ -78,5 +82,4 @@ export class DisciplinaService {
       // Trate o erro aqui
     }
   };
-
 }

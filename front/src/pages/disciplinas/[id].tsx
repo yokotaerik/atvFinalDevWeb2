@@ -39,6 +39,18 @@ const Disciplina: React.FC = () => {
     }
   };
 
+
+  const deleteDisciplina = async () => {
+    try {
+      const response = await api.delete(`/disciplina/${id}`);
+      if (response.status === 200) {
+        router.push("/disciplinas");
+      }
+    } catch (error) {
+      alert("Erro ao deletar disciplina");
+    }
+  }
+
   useEffect(() => {
     fetchDisciplinas();
   }, []);
@@ -55,11 +67,7 @@ const Disciplina: React.FC = () => {
         </button>
         <button
           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() =>
-            api
-              .delete(`/disciplina/${id}`)
-              .then(() => router.push("/disciplinas"))
-          }
+          onClick={() => {window.confirm("Realmente deseja deletar ess disciplina? Lembre-se que não é possivel deletar disciplinas que alunos ja concluiram ou uma disciplina que está em um curso");deleteDisciplina()}}
         >
           Deletar
         </button>

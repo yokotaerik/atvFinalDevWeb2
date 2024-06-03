@@ -83,4 +83,27 @@ export class CursoController {
       res.status(500).send("Erro ao deletar curso");
     }
   }
+
+  async deleteDisciplina(req: Request, res: Response) {
+    try {
+      await cursoService.deleteDisciplina(Number(req.body.cursoId), Number(req.body.disciplinaId))
+      res.status(200).send("Disciplina deletada com sucesso!");
+    } catch (error) {
+      res.status(500).send("Erro ao deletar disciplina");
+    }
+  }
+
+  async desmatricularAluno(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        res.status(400).send("ID não fornecido");
+        return;
+      }
+      await cursoService.desmatricularAluno(Number(id));
+      res.status(200).send("Aluno desmatriculado com sucesso!");
+    } catch (error) {
+      res.status(500).send("Erro ao desmatricular aluno");
+    }
+  }
 }

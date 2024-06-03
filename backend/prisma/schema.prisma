@@ -8,37 +8,37 @@ datasource db {
 }
 
 model Disciplina {
-  id                Int                        @id @default(autoincrement())
-  nome              String
-  cargaHoraria      Int
-  ementa            String
-  alunosAtivos      AlunoDisciplinaMatriculado[]
-  alunosTrancados   AlunoDisciplinaTrancado[]
-  alunosConcluidos  AlunoDisciplinaCursado[]
-  cursos            CursoDisciplina[]
+  id               Int                          @id @default(autoincrement())
+  nome             String
+  cargaHoraria     Int
+  ementa           String
+  alunosAtivos     AlunoDisciplinaMatriculado[]
+  alunosTrancados  AlunoDisciplinaTrancado[]
+  alunosConcluidos AlunoDisciplinaCursado[]
+  cursos           CursoDisciplina[]
 }
 
 model Curso {
-  id            Int                   @id @default(autoincrement())
-  nome          String
-  descricao     String
-  duracao       Int
-  horasTotais   Int?
-  alunos        Aluno[]
-  disciplinas   CursoDisciplina[]
+  id          Int               @id @default(autoincrement())
+  nome        String
+  descricao   String
+  duracao     Int
+  horasTotais Int?
+  alunos      Aluno[]
+  disciplinas CursoDisciplina[]
 }
 
 model Aluno {
-  id                       Int                       @id @default(autoincrement())
-  nome                     String
-  cpf                      String                    @unique
-  email                    String                    @unique
-  cursoId                  Int?
-  ativo                    Boolean                   @default(true)
-  curso                    Curso?                    @relation(fields: [cursoId], references: [id])
-  disciplinasMatriculado   AlunoDisciplinaMatriculado[]
-  disciplinasTrancado      AlunoDisciplinaTrancado[]
-  disciplinasCursado       AlunoDisciplinaCursado[]
+  id                     Int                          @id @default(autoincrement())
+  nome                   String
+  cpf                    String                       @unique
+  email                  String                       @unique
+  cursoId                Int?
+  ativo                  Boolean                      @default(true)
+  curso                  Curso?                       @relation(fields: [cursoId], references: [id])
+  disciplinasMatriculado AlunoDisciplinaMatriculado[]
+  disciplinasTrancado    AlunoDisciplinaTrancado[]
+  disciplinasCursado     AlunoDisciplinaCursado[]
 }
 
 model AlunoDisciplinaMatriculado {
@@ -46,8 +46,9 @@ model AlunoDisciplinaMatriculado {
   alunoId      Int
   disciplinaId Int
   data         DateTime   @default(now())
-  aluno        Aluno      @relation(fields: [alunoId], references: [id])
+  aluno        Aluno      @relation(fields: [alunoId], references: [id], onDelete: Cascade)
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
+
   @@index([alunoId])
   @@index([disciplinaId])
 }
@@ -57,8 +58,9 @@ model AlunoDisciplinaTrancado {
   alunoId      Int
   disciplinaId Int
   data         DateTime   @default(now())
-  aluno        Aluno      @relation(fields: [alunoId], references: [id])
+  aluno        Aluno      @relation(fields: [alunoId], references: [id], onDelete: Cascade)
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
+
   @@index([alunoId])
   @@index([disciplinaId])
 }
@@ -68,8 +70,9 @@ model AlunoDisciplinaCursado {
   alunoId      Int
   disciplinaId Int
   data         DateTime   @default(now())
-  aluno        Aluno      @relation(fields: [alunoId], references: [id])
+  aluno        Aluno      @relation(fields: [alunoId], references: [id], onDelete: Cascade)
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
+
   @@index([alunoId])
   @@index([disciplinaId])
 }
@@ -79,5 +82,6 @@ model CursoDisciplina {
   disciplinaId Int
   curso        Curso      @relation(fields: [cursoId], references: [id])
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
+
   @@id([cursoId, disciplinaId])
 }

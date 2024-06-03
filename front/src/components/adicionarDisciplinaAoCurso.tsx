@@ -91,6 +91,14 @@ const AdicionarisciplinaAoCurso: React.FC<AdicionarisciplinaAoCursoProps> = ({
                   (disciplina) => disciplina.id === Number(idDisciplina)
                 )?.nome
               }
+              {"    "}	
+              <button
+              onClick={() =>
+                setDisciplinasSelecionadas((disciplinasAnteriores) =>
+                  disciplinasAnteriores.filter((id) => id !== idDisciplina)
+                )
+              }
+              >X</button>
             </span>
           ))}
         </div>

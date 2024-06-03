@@ -3,13 +3,15 @@ import { prisma } from "../prisma/prisma";
 export class AlunoService {
   async deleteAluno(id: number) {
     try {
-      const alunoDeletado = await prisma.aluno.findUnique({
+      await prisma.aluno.delete({
         where: {
           id,
         },
         include: {
           curso: true,
-          disciplinasMatriculado: {},
+          disciplinasMatriculado: true,
+          disciplinasCursado: true,
+          disciplinasTrancado: true,
         },
       });
     } catch (error) {
